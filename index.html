@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Зов Предков — ИИ Проект</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   CSS CUSTOM PROPERTIES
+   ═══════════════════════════════════════════ */
+:root {
+  --bg-deep: #06060c;
+  --bg-surface: #0c0c16;
+  --bg-card: #111120;
+  --bg-card-hover: #16162a;
+  --gold: #c9a84c;
+  --gold-light: #e4c96a;
+  --gold-dim: #8b7335;
+  --gold-glow: rgba(201, 168, 76, 0.35);
+  --gold-glow-strong: rgba(201, 168, 76, 0.6);
+  --text-primary: #e2dcd0;
+  --text-secondary: #9a9490;
+  --text-muted: #5a5650;
+  --text-poem: #d4cec2;
+  --accent-green: #5a9b7a;
+  --accent-red: #b35a5a;
+  --accent-blue: #5a7ab3;
+  --past-opacity: 0.35;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-display: 'Playfair Display', 'Georgia', serif;
+  --font-poem: 'Cormorant Garamond', 'Georgia', serif;
+  --font-body: 'Manrope', 'Helvetica Neue', sans-serif;
+}
+
+/* ═══════════════════════════════════════════
+   RESET & BASE
+   ═══════════════════════════════════════════ */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--bg-deep);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(201,168,76,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 20% 80%, rgba(90,122,179,0.03) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 60% at 80% 60%, rgba(201,168,76,0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ═══════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════ */
+.site-header {
+  position: relative;
+  z-index: 10;
+  text-align: center;
+  padding: 48px 24px 20px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.site-header h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  text-shadow: 0 0 40px var(--gold-glow), 0 0 80px rgba(201,168,76,0.15);
+  margin-bottom: 6px;
+}
+.site-header .subtitle {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 400;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.site-header .status-badge {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 5px 16px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(90,155,122,0.15);
+  color: var(--accent-green);
+  border: 1px solid rgba(90,155,122,0.25);
+}
+
+/* ═══════════════════════════════════════════
+   TAB NAVIGATION
+   ═══════════════════════════════════════════ */
+.tab-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  padding: 12px 16px;
+  background: rgba(6,6,12,0.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(201,168,76,0.08);
+  flex-wrap: wrap;
+}
+.tab-btn {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 10px 20px;
+  border: 1px solid transparent;
+  border-radius: 100px;
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: rgba(201,168,76,0.06);
+}
+.tab-btn.active {
+  color: var(--gold);
+  background: rgba(201,168,76,0.1);
+  border-color: rgba(201,168,76,0.2);
+}
+
+/* ═══════════════════════════════════════════
+   TAB CONTENT
+   ═══════════════════════════════════════════ */
+.tab-content { display: none; position: relative; z-index: 1; }
+.tab-content.active {
+  display: block;
+  animation: tabFadeIn 0.4s ease-out;
+}
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+/* ═══════════════════════════════════════════
+   ROADMAP / TIMELINE
+   ═══════════════════════════════════════════ */
+.roadmap-intro {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.roadmap-intro h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.roadmap-intro p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  max-width: 550px;
+  margin: 0 auto;
+}
+.timeline {
+  position: relative;
+  padding-left: 44px;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 15px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(
+    to bottom,
+    rgba(201,168,76,0.1) 0%,
+    rgba(201,168,76,0.15) 20%,
+    var(--gold-dim) 45%,
+    var(--gold) 50%,
+    var(--gold-dim) 55%,
+    rgba(201,168,76,0.15) 80%,
+    rgba(201,168,76,0.1) 100%
+  );
+}
+.timeline::after {
+  content: '';
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 8px;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    transparent 42%,
+    var(--gold-glow) 48%,
+    var(--gold-glow-strong) 50%,
+    var(--gold-glow) 52%,
+    transparent 58%,
+    transparent 100%
+  );
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* --- Past section --- */
+.timeline-section-label {
+  font-family: var(--font-body);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 16px;
+  margin-left: -44px;
+  padding-left: 44px;
+}
+
+.tl-item {
+  position: relative;
+  margin-bottom: 28px;
+  padding: 18px 22px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  transition: var(--transition);
+}
+.tl-item:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(201,168,76,0.1);
+}
+
+/* Node on the timeline */
+.tl-item::before {
+  content: '';
+  position: absolute;
+  left: -37px;
+  top: 22px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 2px solid var(--gold-dim);
+  z-index: 2;
+}
+
+.tl-item .tl-date {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 6px;
+}
+.tl-item .tl-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.tl-item .tl-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.tl-item .tl-desc ul {
+  margin-top: 6px;
+  padding-left: 18px;
+}
+.tl-item .tl-desc li {
+  margin-bottom: 3px;
+}
+
+/* Past items */
+.tl-item.past {
+  opacity: var(--past-opacity);
+  filter: blur(0.4px);
+}
+.tl-item.past:hover {
+  opacity: 0.65;
+  filter: none;
+}
+.tl-item.past::before {
+  border-color: var(--text-muted);
+  background: var(--text-muted);
+  width: 8px;
+  height: 8px;
+  left: -36px;
+  top: 23px;
+}
+
+/* Current / TODAY item */
+.tl-item.current {
+  background: rgba(201,168,76,0.08);
+  border-color: rgba(201,168,76,0.25);
+  box-shadow: 0 0 30px rgba(201,168,76,0.08), inset 0 0 30px rgba(201,168,76,0.03);
+}
+.tl-item.current::before {
+  width: 14px;
+  height: 14px;
+  left: -39px;
+  top: 20px;
+  background: var(--gold);
+  border-color: var(--gold-light);
+  box-shadow: 0 0 12px var(--gold-glow-strong), 0 0 24px var(--gold-glow);
+  animation: nodePulse 2.5s ease-in-out infinite;
+}
+.tl-item.current .tl-date {
+  color: var(--gold-light);
+}
+.tl-item.current .tl-title {
+  color: var(--gold-light);
+}
+
+@keyframes nodePulse {
+  0%, 100% { box-shadow: 0 0 12px var(--gold-glow-strong), 0 0 24px var(--gold-glow); }
+  50% { box-shadow: 0 0 18px var(--gold-glow-strong), 0 0 40px var(--gold-glow), 0 0 60px rgba(201,168,76,0.15); }
+}
+
+/* Future items */
+.tl-item.future::before {
+  background: transparent;
+  border-color: var(--gold-dim);
+  border-style: dashed;
+}
+
+/* Target/final item */
+.tl-item.target {
+  background: rgba(90,155,122,0.06);
+  border-color: rgba(90,155,122,0.2);
+}
+.tl-item.target::before {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  box-shadow: 0 0 10px rgba(90,155,122,0.4);
+}
+.tl-item.target .tl-date { color: var(--accent-green); }
+.tl-item.target .tl-title { color: var(--accent-green); }
+
+/* Today badge */
+.today-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--gold);
+  color: var(--bg-deep);
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+/* Assignee tags */
+.assignee {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 100px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  margin-right: 4px;
+  margin-top: 8px;
+}
+.assignee.vova { background: rgba(90,122,179,0.15); color: var(--accent-blue); border: 1px solid rgba(90,122,179,0.25); }
+.assignee.sergey { background: rgba(201,168,76,0.12); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+.assignee.zaur { background: rgba(90,155,122,0.12); color: var(--accent-green); border: 1px solid rgba(90,155,122,0.2); }
+.assignee.all { background: rgba(255,255,255,0.05); color: var(--text-secondary); border: 1px solid rgba(255,255,255,0.1); }
+
+/* ═══════════════════════════════════════════
+   POEM TAB
+   ═══════════════════════════════════════════ */
+.poem-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 60px 24px 80px;
+}
+.poem-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.poem-header h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+.poem-header .poem-author {
+  font-family: var(--font-poem);
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--text-secondary);
+}
+.poem-text {
+  font-family: var(--font-poem);
+  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+  font-weight: 400;
+  line-height: 1.9;
+  color: var(--text-poem);
+  text-align: center;
+}
+.poem-stanza {
+  margin-bottom: 36px;
+  padding: 20px 0;
+  position: relative;
+}
+.poem-stanza::after {
+  content: '·';
+  display: block;
+  text-align: center;
+  color: var(--gold-dim);
+  font-size: 1.8rem;
+  margin-top: 24px;
+  letter-spacing: 12px;
+}
+.poem-stanza:last-child::after { display: none; }
+.poem-stanza .line {
+  display: block;
+  margin-bottom: 2px;
+}
+
+/* ═══════════════════════════════════════════
+   SCENARIO TAB
+   ═══════════════════════════════════════════ */
+.scenario-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.scenario-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.scenario-header p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+.scene-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  margin-bottom: 24px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  background: var(--bg-card);
+  transition: var(--transition);
+}
+.scene-card:hover {
+  border-color: rgba(201,168,76,0.12);
+}
+@media (max-width: 700px) {
+  .scene-card { grid-template-columns: 1fr; }
+}
+.scene-poem {
+  padding: 24px;
+  background: rgba(201,168,76,0.03);
+  border-right: 1px solid rgba(201,168,76,0.08);
+  font-family: var(--font-poem);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.8;
+  color: var(--text-poem);
+}
+@media (max-width: 700px) {
+  .scene-poem { border-right: none; border-bottom: 1px solid rgba(201,168,76,0.08); }
+}
+.scene-visual {
+  padding: 24px;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+}
+.scene-number {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 10px;
+  padding: 3px 10px;
+  border: 1px solid rgba(201,168,76,0.15);
+  border-radius: 100px;
+}
+.scene-note {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: rgba(201,168,76,0.04);
+  border-left: 2px solid var(--gold-dim);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-size: 0.8rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* ═══════════════════════════════════════════
+   DECISIONS TAB
+   ═══════════════════════════════════════════ */
+.decisions-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.decisions-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.decision-group {
+  margin-bottom: 36px;
+}
+.decision-group h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.decision-card {
+  padding: 16px 20px;
+  margin-bottom: 10px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  transition: var(--transition);
+}
+.decision-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(201,168,76,0.08);
+}
+.decision-card strong {
+  color: var(--text-primary);
+}
+.decision-card .status-ok {
+  color: var(--accent-green);
+  font-weight: 600;
+}
+.decision-card .status-pending {
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════
+   ABOUT / KNOWLEDGE BASE TAB
+   ═══════════════════════════════════════════ */
+.about-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.about-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 8px;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.team-card {
+  padding: 22px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius);
+  text-align: center;
+  transition: var(--transition);
+}
+.team-card:hover {
+  border-color: rgba(201,168,76,0.12);
+}
+.team-card .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 auto 12px;
+}
+.team-card .avatar.vova { background: rgba(90,122,179,0.2); color: var(--accent-blue); }
+.team-card .avatar.sergey { background: rgba(201,168,76,0.15); color: var(--gold); }
+.team-card .avatar.zaur { background: rgba(90,155,122,0.15); color: var(--accent-green); }
+.team-card .name {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.team-card .role {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.myth-section h3 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 16px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+.myth-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin-bottom: 40px;
+}
+.myth-card {
+  padding: 16px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-sm);
+  transition: var(--transition);
+}
+.myth-card:hover {
+  border-color: rgba(201,168,76,0.12);
+  background: var(--bg-card-hover);
+}
+.myth-card .myth-name {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--gold-light);
+  margin-bottom: 6px;
+}
+.myth-card .myth-desc {
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--text-secondary);
+}
+.concept-block {
+  padding: 24px;
+  background: var(--bg-card);
+  border: 1px solid rgba(201,168,76,0.08);
+  border-radius: var(--radius);
+  margin-bottom: 24px;
+}
+.concept-block h4 {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.concept-block p, .concept-block ul {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+.concept-block ul { padding-left: 20px; margin-top: 6px; }
+.concept-block li { margin-bottom: 4px; }
+
+/* ═══════════════════════════════════════════
+   COLLAPSIBLE PAST SECTION
+   ═══════════════════════════════════════════ */
+.past-toggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  margin-bottom: 24px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.05);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: var(--transition);
+  width: 100%;
+  text-align: left;
+}
+.past-toggle:hover {
+  color: var(--text-secondary);
+  background: rgba(255,255,255,0.04);
+}
+.past-toggle .arrow {
+  transition: transform 0.3s ease;
+  font-size: 0.7rem;
+}
+.past-toggle.open .arrow {
+  transform: rotate(90deg);
+}
+.past-items {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.past-items.open {
+  max-height: 2000px;
+}
+
+/* ═══════════════════════════════════════════
+   UTILITIES
+   ═══════════════════════════════════════════ */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,168,76,0.15), transparent);
+  margin: 40px 0;
+}
+
+/* ═══════════════════════════════════════════
+   ANIMATIONS
+   ═══════════════════════════════════════════ */
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeUp 0.6s ease-out forwards;
+}
+@keyframes fadeUp {
+  to { opacity: 1; transform: translateY(0); }
+}
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* ═══════════════════════════════════════════
+   SCROLLBAR
+   ═══════════════════════════════════════════ */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-deep); }
+::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(201,168,76,0.35); }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════ -->
+<header class="site-header">
+  <h1>Зов Предков</h1>
+  <div class="subtitle">ИИ-видеопроект &middot; Осетинская мифология</div>
+  <div class="status-badge">В разработке &middot; Дедлайн 25 апреля</div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     TAB NAVIGATION
+     ═══════════════════════════════════════════ -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="roadmap">Роадмап</button>
+  <button class="tab-btn" data-tab="poem">Стихотворение</button>
+  <button class="tab-btn" data-tab="scenario">Сценарий</button>
+  <button class="tab-btn" data-tab="decisions">Правки и решения</button>
+  <button class="tab-btn" data-tab="about">База знаний</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════
+     TAB 1: ROADMAP
+     ═══════════════════════════════════════════ -->
+<section class="tab-content active" id="roadmap">
+  <div class="container">
+
+    <div class="roadmap-intro fade-up">
+      <h2>Светящаяся тропа</h2>
+      <p>Пайплайн проекта. Каждый этап утверждается перед переходом к следующему. Алгоритм: генерируем сегмент &rarr; утверждаем &rarr; двигаемся дальше.</p>
+    </div>
+
+    <!-- PAST EVENTS (collapsible) -->
+    <button class="past-toggle fade-up stagger-1" onclick="togglePast(this)">
+      <span class="arrow">&#9654;</span>
+      История проекта &middot; Октябрь 2025 &mdash; Январь 2026
+    </button>
+
+    <div class="past-items" id="past-items">
+      <div class="timeline">
+
+        <div class="tl-item past">
+          <div class="tl-date">24 октября 2025</div>
+          <div class="tl-title">Старт проекта</div>
+          <div class="tl-desc">Создана группа. Загружен PDF сценария (наброски от 18.09.2025). Первое видео от Сергея (01:20).</div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">25 октября 2025</div>
+          <div class="tl-title">Первые материалы</div>
+          <div class="tl-desc">Заур прислал 11 анимаций-референсов. Вова записал первую начитку стихотворения (05:48).</div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">20 ноября 2025</div>
+          <div class="tl-title">Пауза</div>
+          <div class="tl-desc">Сергей пропал на месяц. Вова и Заур ждут новостей.</div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">11–12 декабря 2025</div>
+          <div class="tl-title">Возвращение и активная фаза</div>
+          <div class="tl-desc">
+            Сергей вернулся. Вова начитал стих своим голосом (решено: живой голос > ИИ). Сергей сделал ИИ-версию и версию с таймкодами. Утверждены: формат 16:9, одежда героя, референсы внешности.
+          </div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">14–26 декабря 2025</div>
+          <div class="tl-title">Генерация и музыка</div>
+          <div class="tl-desc">
+            Обсуждение музыки: минимальный дрон, без ирон жара. Идея подключить дирижера из Мариинки. Сгенерировано 400+ кадров (половина с дефектами). 6 часов работы над анимацией.
+          </div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">5 января 2026</div>
+          <div class="tl-title">Первая версия видео</div>
+          <div class="tl-desc">
+            Отправлена предварительная версия (05:13, 551 MB). Фидбек Вовы: нет цельности, простые кадры впечатляют больше, стих — основной мотив, видео — фон. Решение: пересмотреть сценарий.
+          </div>
+        </div>
+
+        <div class="tl-item past">
+          <div class="tl-date">6 января — 23 января 2026</div>
+          <div class="tl-title">Пересмотр подхода</div>
+          <div class="tl-desc">
+            Сергей согласен на переделку. Нейронка глючит в динамике — статичные кадры реалистичнее. Проблемы с коммуникацией. Вова предлагает: или назвать реальную цену, или закрыть вопрос.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- CURRENT SECTION -->
+    <div class="timeline-section-label fade-up stagger-2">Сейчас</div>
+
+    <div class="timeline">
+
+      <div class="tl-item current fade-up stagger-2">
+        <div class="tl-date">3 апреля 2026 <span class="today-badge">Сегодня</span></div>
+        <div class="tl-title">Созвон — Новый пайплайн</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Утвержден <strong>линейный подход</strong>: по сегментам, каждый утверждается</li>
+            <li>Главное требование к кадрам: <strong>ультрареализм</strong>, без мультяшности</li>
+            <li>Статичные кадры с настроением, меньше динамики</li>
+            <li>Картины заменить, крупные планы, сильные взгляды</li>
+            <li>Утверждены: Барастыр + колодец, свет в груди, концовка с Балсагом</li>
+            <li>Саунд-дизайн в конце (дыхание, вой, эффекты)</li>
+            <li>Создан этот сайт как база знаний и трекер</li>
+          </ul>
+          <span class="assignee all">Все участники</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- FUTURE SECTION -->
+    <div class="timeline-section-label fade-up stagger-3">Предстоит</div>
+
+    <div class="timeline">
+
+      <div class="tl-item future fade-up stagger-3">
+        <div class="tl-date">5–6 апреля (выходные)</div>
+        <div class="tl-title">Запись нового аудио</div>
+        <div class="tl-desc">
+          Вова записывает новую качественную версию стихотворения на диктофон. Хорошее помещение, без фоновых шумов. Эта запись станет основой для всего видео.
+          <br><span class="assignee vova">Вова Бирагов</span>
+        </div>
+      </div>
+
+      <div class="tl-item future fade-up stagger-3">
+        <div class="tl-date">6 апреля</div>
+        <div class="tl-title">Созвон — Утверждение аудио и правок</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Прослушать и утвердить новую запись стихотворения</li>
+            <li>Вова скидывает примерную внешность персонажа</li>
+            <li>Вова описывает, что именно не понравилось и что исправить</li>
+            <li>Обсудить визуальные правки из созвона 3 апреля</li>
+          </ul>
+          <span class="assignee vova">Вова — аудио, внешность, правки</span>
+          <span class="assignee sergey">Сергей — подготовка</span>
+        </div>
+      </div>
+
+      <div class="tl-item future fade-up stagger-4">
+        <div class="tl-date">7–12 апреля</div>
+        <div class="tl-title">Визуальная база</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Создание внешности персонажа заново (ультрареализм)</li>
+            <li>Создание локаций заново</li>
+            <li>Сбор полного набора референсов для генерации видео</li>
+            <li>Отбор и создание фоновой музыки (несколько вариантов под настроение)</li>
+          </ul>
+          <span class="assignee sergey">Сергей — генерация</span>
+          <span class="assignee vova">Вова — референсы, фидбек</span>
+        </div>
+      </div>
+
+      <div class="tl-item future fade-up stagger-4">
+        <div class="tl-date">12–20 апреля</div>
+        <div class="tl-title">Генерация видео (линейный подход)</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Начальный сегмент (~5 сек) &rarr; утверждение &rarr; не возвращаемся</li>
+            <li>Следующий сегмент &rarr; утверждение &rarr; далее</li>
+            <li>Каждый кадр — сильный, реалистичный, статичный</li>
+            <li>При необходимости — перегенерация исходника через нейронку</li>
+          </ul>
+          <span class="assignee sergey">Сергей — генерация</span>
+          <span class="assignee vova">Вова — утверждение</span>
+          <span class="assignee zaur">Заур — контроль сценария</span>
+        </div>
+      </div>
+
+      <div class="tl-item future fade-up stagger-5">
+        <div class="tl-date">20–24 апреля</div>
+        <div class="tl-title">Саунд-дизайн и финальная сборка</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Выбор финальной фоновой музыки из подготовленных вариантов</li>
+            <li>Саунд-дизайн: дыхание, вой волков, эхо, эффекты</li>
+            <li>Финальный монтаж и цветокоррекция</li>
+            <li>Утверждение финальной версии</li>
+          </ul>
+          <span class="assignee sergey">Сергей — сборка</span>
+          <span class="assignee all">Все — утверждение</span>
+        </div>
+      </div>
+
+      <div class="tl-item target fade-up stagger-5">
+        <div class="tl-date">25 апреля 2026</div>
+        <div class="tl-title">Завершение видео</div>
+        <div class="tl-desc">
+          Целевая дата готовности финальной версии ИИ-видеоклипа «Зов Предков» (~5 минут).
+          <span class="assignee all">Все участники</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 2: POEM
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="poem">
+  <div class="poem-container">
+
+    <div class="poem-header fade-up">
+      <h2>Зов Предков</h2>
+      <div class="poem-author">Заур Соскиев</div>
+    </div>
+
+    <div class="poem-text fade-up stagger-1">
+
+      <div class="poem-stanza">
+        <span class="line">Потомок мой! Ты &mdash; плод на старом древе,</span>
+        <span class="line">Стоящем с незапамятных времён.</span>
+        <span class="line">Когда очистится зерно от плевел,</span>
+        <span class="line">Услышишь голос мой сквозь сон.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Не верь, что нет меня. Осенний лист иссохший,</span>
+        <span class="line">Опав, дыханье древа не прервёт.</span>
+        <span class="line">Всё та же тайна будет разделять и множить</span>
+        <span class="line">Единства ткань, когда оттает лёд.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Через твои глаза внимает мир всё та же</span>
+        <span class="line">Безмолвная, вневременная суть,</span>
+        <span class="line">Что наблюдала и за мной однажды,</span>
+        <span class="line">Что некогда мою вздымала грудь.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Ты был всегда, когда-то звался мною.</span>
+        <span class="line">Носил ты тысячи и тысячи имён.</span>
+        <span class="line">Другие кони ржали под тобою,</span>
+        <span class="line">В других шатрах других ласкал ты жён.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Ты кочевал от Днестра до Дуная</span>
+        <span class="line">Под флагами исчезнувших племён</span>
+        <span class="line">И осаждал ты города Китая,</span>
+        <span class="line">И красотою Рима был пленён.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Пускал галопом жеребца гнедого</span>
+        <span class="line">На левый фланг Тимура, в западню,</span>
+        <span class="line">И у границы царствия земного</span>
+        <span class="line">Ты первым брешь пробил в гетайровском строю.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Ты отступал упрямо к Борисфену</span>
+        <span class="line">В глухую бездну собственных степей,</span>
+        <span class="line">Врагу оставив пастбища из тлена,</span>
+        <span class="line">Заманивая вглубь царя царей.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Колол быков у тысячи святилищ,</span>
+        <span class="line">Селился в храмах у орлиных гнёзд,</span>
+        <span class="line">И так же, как сейчас, тебя манили</span>
+        <span class="line">Своим сияньем мириады звёзд.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Твои могилы &mdash; на Урале, в Палестине.</span>
+        <span class="line">В Египте, Фракии &mdash; твои следы.</span>
+        <span class="line">Забытые людьми, под слоем глины,</span>
+        <span class="line">Твоих домов разрушенных угли.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Ты был разбит у Терека и Дона,</span>
+        <span class="line">В Хабеи был ты заживо сожжён.</span>
+        <span class="line">Штандарты с головой дракона</span>
+        <span class="line">Тобою подняты на Пиренейский трон.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Преследовал золоторогого оленя</span>
+        <span class="line">В ущельях Гумских на заре эпох.</span>
+        <span class="line">Ты есть! Ты &mdash; за пределами творенья,</span>
+        <span class="line">Ты &mdash; зеркало, в котором бег веков.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">И вот сейчас, уткнувшись взором в землю,</span>
+        <span class="line">Бредёшь, забывшись в вихре слов,</span>
+        <span class="line">Источник света, ставший тенью,</span>
+        <span class="line">Свидетель, ставший образом из снов.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Льёшь пот и кровь на полосе отлива,</span>
+        <span class="line">Опять ваяя замок из песка,</span>
+        <span class="line">И, как ярмо, очередное имя,</span>
+        <span class="line">Словно Сизиф, волочишь в облака.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Ты должен вспомнить, кто ты, чтобы сбылся</span>
+        <span class="line">Путь всех несметных судеб в ДНК,</span>
+        <span class="line">Чтобы поход походов завершился,</span>
+        <span class="line">Чтобы свой океан нашла река.</span>
+      </div>
+
+      <div class="poem-stanza">
+        <span class="line">Мы ждём тебя на поле в Зилахаре.</span>
+        <span class="line">Ряды столов уходят в горизонт,</span>
+        <span class="line">Чтобы мы все в тебе единым стали,</span>
+        <span class="line">Чтобы увидели мы свой последний сон.</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 3: SCENARIO
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="scenario">
+  <div class="container">
+
+    <div class="scenario-header fade-up">
+      <h2>Сценарий</h2>
+      <p>Раскадровка: слева — строки стихотворения, справа — визуальное описание сцены</p>
+    </div>
+
+    <!-- Scene 1 -->
+    <div class="scene-card fade-up stagger-1">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 1 — Вступление</div><br>
+        Потомок мой! Ты &mdash; плод на старом древе,<br>
+        Стоящем с незапамятных времён.<br>
+        Когда очистится зерно от плевел,<br>
+        Услышишь голос мой сквозь сон.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Полумрак. Пустота. Герой сидит в центре. Вокруг &mdash; картины осетинского пантеона полукругом (или замкнутым кругом). Камера движется вокруг героя на 360&deg;, показывая картины Старших. Читается стих, но герой не раскрывает рта.
+        <div class="scene-note">Камера фронтально &rarr; центрируется на глазу &rarr; вплывает в черноту зрачка, как в портал &rarr; абсолютно тёмное внутреннее пространство.</div>
+      </div>
+    </div>
+
+    <!-- Scene 2 -->
+    <div class="scene-card fade-up stagger-1">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 2 — Уастырджи</div><br>
+        Не верь, что нет меня. Осенний лист иссохший,<br>
+        Опав, дыханье древа не прервёт.<br>
+        Всё та же тайна будет разделять и множить<br>
+        Единства ткань, когда оттает лёд.<br><br>
+        Через твои глаза внимает мир всё та же<br>
+        Безмолвная, вневременная суть...
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        <strong>Снаружи:</strong> Камера вокруг героя, акцент на картине Уастырджи. Глаза закрыты, медитация. Ровная спина, ладони на коленях.<br><br>
+        <strong>Внутри:</strong> Из темноты появляется Уастырджи с белым жеребцом (белый настолько, что от него свечение). Молча смотрит, разворачивается, уходит. Жеребец встаёт на дыбы и ускакивает — след превращается в <em>сияющую тропу</em>.
+      </div>
+    </div>
+
+    <!-- Scene 3 -->
+    <div class="scene-card fade-up stagger-2">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 3 — Тутыр и волки</div><br>
+        Ты был всегда, когда-то звался мною.<br>
+        Носил ты тысячи и тысячи имён.<br>
+        Другие кони ржали под тобою,<br>
+        В других шатрах других ласкал ты жён.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Герой идёт по тропе от первого лица. Волки обгоняют, оставляя светящиеся следы. Впереди — фигура Тутыра. Глаза волков светятся. Тутыр поворачивается и исчезает.
+        <div class="scene-note">Вариант: Тутыр обращается в волка, уводя стаю и образуя светящуюся тропу.</div>
+      </div>
+    </div>
+
+    <!-- Scene 4 -->
+    <div class="scene-card fade-up stagger-2">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 4 — Фалвара и быки</div><br>
+        Колол быков у тысячи святилищ,<br>
+        Селился в храмах у орлиных гнёзд,<br>
+        И так же, как сейчас, тебя манили<br>
+        Своим сияньем мириады звёзд.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        <strong>Снаружи:</strong> Акцент на картине Фалвара. Ракурс: вздымание груди героя (ровное дыхание).<br><br>
+        <strong>Внутри:</strong> Сплошное море чёрных могучих быков (бескрайнее стадо). На шее каждого — светящийся золотой колокольчик. Расступаются, образуя проход.
+      </div>
+    </div>
+
+    <!-- Scene 5 -->
+    <div class="scene-card fade-up stagger-3">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 5 — Уацилла и молния</div><br>
+        Твои могилы &mdash; на Урале, в Палестине.<br>
+        В Египте, Фракии &mdash; твои следы.<br>
+        Забытые людьми, под слоем глины,<br>
+        Твоих домов разрушенных угли.<br><br>
+        Ты был разбит у Терека и Дона...
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        <strong>Снаружи:</strong> Акцент на картине Уацилла. Глаза закрыты. Кадр века, за которым шевелится зрачок.<br><br>
+        <strong>Внутри:</strong> Уацилла из темноты. Молча смотрит, закрывает глаза &rarr; молния бьёт в него &rarr; вспышка. Молния образует новую светящуюся тропу.
+        <div class="scene-note">Момент вспышки может озарить тьму — повсюду море людей (предков), молча смотрящих на героя. И снова полный мрак.</div>
+      </div>
+    </div>
+
+    <!-- Scene 6 -->
+    <div class="scene-card fade-up stagger-3">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 6 — Афсати и олень</div><br>
+        Преследовал золоторогого оленя<br>
+        В ущельях Гумских на заре эпох.<br>
+        Ты есть! Ты &mdash; за пределами творенья,<br>
+        Ты &mdash; зеркало, в котором бег веков.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Могучий самец оленя. Золотые рога, свечение. Пристально смотрит, дышит, из ноздрей пар. Близкий ракурс на глаз оленя.<br><br>
+        Камера входит в зрачок &rarr; не темнота, а <strong>космос</strong> &mdash; туманность Ориона, звёздные образования. Отдаление &rarr; Млечный Путь (форма светящегося колеса).
+      </div>
+    </div>
+
+    <!-- Scene 7 -->
+    <div class="scene-card fade-up stagger-4">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 7 — Балсаг</div><br>
+        Льёшь пот и кровь на полосе отлива,<br>
+        Опять ваяя замок из песка,<br>
+        И, как ярмо, очередное имя,<br>
+        Словно Сизиф, волочишь в облака.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Появляется рука Балсага, берёт галактику (светящееся колесо). Камера отдаляется &rarr; Балсаг в полный рост. Пускает колесо по земле &rarr; укатывается вдаль, оставляя светящуюся тропу. Герой продолжает путь.
+      </div>
+    </div>
+
+    <!-- Scene 8 -->
+    <div class="scene-card fade-up stagger-4">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 8 — Барастыр и колодец</div><br>
+        Ты должен вспомнить, кто ты, чтобы сбылся<br>
+        Путь всех несметных судеб в ДНК...<br><br>
+        Мы ждём тебя на поле в Зилахаре.<br>
+        Ряды столов уходят в горизонт,<br>
+        Чтобы мы все в тебе единым стали,<br>
+        Чтобы увидели мы свой последний сон.
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Герой подходит к концу тропы. Свет из каменного колодца. Рядом &mdash; Барастыр. Вокруг — море людей (амфитеатр). Все молчат.<br><br>
+        Барастыр указывает на колодец. Герой заглядывает — белый свет усиливается. Свет из солнечного сплетения героя заполняет кадр &rarr; белый экран.
+      </div>
+    </div>
+
+    <!-- Scene 9 -->
+    <div class="scene-card fade-up stagger-5">
+      <div class="scene-poem">
+        <div class="scene-number">Сцена 9 — Концовка</div><br>
+        <em>(без текста стиха)</em>
+      </div>
+      <div class="scene-visual">
+        <div class="scene-number">Визуал</div><br>
+        Белый экран. Кадр от первого лица. Герой медленно открывает глаза. Он в помещении с картинами. Светло (обычный дневной свет, никаких эффектов). Спокойно встаёт и медленно уходит.
+        <div class="scene-note">Снаружи ничего не произошло. Чтобы не было акцента на магию и волшебные образы — это всё внутри.</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 4: DECISIONS
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="decisions">
+  <div class="container">
+
+    <div class="decisions-header fade-up">
+      <h2>Правки и решения</h2>
+    </div>
+
+    <!-- Latest call decisions -->
+    <div class="decision-group fade-up stagger-1">
+      <h3>Созвон 3 апреля 2026 — Основные правки</h3>
+
+      <div class="decision-card">
+        <strong>Ультрареализм.</strong> Персонажи не должны быть мультяшными. Примеры: картины Лотиева. Каждый кадр как сильная фотография — живой, с взглядом. <span class="status-pending">Приоритет #1</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Статичные кадры с настроением.</strong> Меньше динамики. Камера может чуть повернуться, если удачно вписывается, но главное — статика и настроение. Кадр сбоку с быками — более медитативный.
+      </div>
+
+      <div class="decision-card">
+        <strong>Уастырджи:</strong> его лицо в кадр, голова лошади, переход. Реалистичная лошадь. <span class="status-pending">Переделать</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Картины заменить</strong> (без аудио). Крупные кадры под настроение.
+      </div>
+
+      <div class="decision-card">
+        <strong>Зум в глаз &rarr; космос:</strong> не получилось у обоих. Решение: взять высококачественный исходник и перегенерировать через нейронку = новое видео (авторские права ок).
+      </div>
+
+      <div class="decision-card">
+        <strong>Уацилла на колос &rarr; молекулярный зум:</strong> идея есть, пока не реализовано. <span class="status-pending">Попробовать</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Путь света:</strong> человек идёт, за ним остаётся сияние. Это ключевой визуальный мотив.
+      </div>
+
+      <div class="decision-card">
+        <strong>Линейный pipeline:</strong> первые 5 секунд &rarr; утвердили &rarr; не возвращаемся. Саунд-дизайн в конце. <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Барастыр и колодец</strong> — хорошие, оставить. <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Свет в центре груди</strong> — оставить. <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Концовка:</strong> вселенная в руках Балсага — оставить. <span class="status-ok">Утверждено</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Previous decisions -->
+    <div class="decision-group fade-up stagger-2">
+      <h3>Ранее утверждённые решения</h3>
+
+      <div class="decision-card">
+        <strong>Голос:</strong> живой голос Вовы Бирагова (не ИИ). Группа единогласно: «Это сильнее даже». <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Формат:</strong> 16:9, длительность ~5 минут. <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Одежда героя:</strong> традиционная белая рубашка без воротника, тёмные брюки, туфли. <span class="status-ok">Утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Музыка:</strong> минимальная. Басовый дрон, одна низкая нота, храмовое звучание. Не ирон жара. Не песня. Звуки, эхо, флейта или голос на одной ноте. <span class="status-ok">Направление утверждено</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Музыкант:</strong> план подключить дирижера из Мариинки (друг брата Вовы, работает с Гергиевым) для написания музыки под видео. Запасной вариант: музыкант с оборудованием (знакомый Вовы). <span class="status-pending">Ожидает готовности видео</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Акцент на стих, не визуал.</strong> Стих — основной мотив. Видео — фон, не должно отнимать внимание. Меньше действий и событий. Дать стиху раскрыться. <span class="status-ok">Утверждено</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 5: KNOWLEDGE BASE
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="about">
+  <div class="container">
+
+    <div class="about-header fade-up">
+      <h2>База знаний</h2>
+    </div>
+
+    <!-- Team -->
+    <div class="team-grid fade-up stagger-1">
+      <div class="team-card">
+        <div class="avatar vova">ВБ</div>
+        <div class="name">Вова Бирагов</div>
+        <div class="role">Продюсер &middot; Голос &middot; Идея</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar sergey">СБ</div>
+        <div class="name">Сергей Бигулов</div>
+        <div class="role">ИИ-генерация &middot; Монтаж</div>
+      </div>
+      <div class="team-card">
+        <div class="avatar zaur">ЗС</div>
+        <div class="name">Заур Соскиев</div>
+        <div class="role">Сценарист &middot; Автор стиха</div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Concept -->
+    <div class="concept-block fade-up stagger-2">
+      <h4>Концепция проекта</h4>
+      <p>ИИ-сгенерированный видеоклип на стихотворение «Зов Предков» (~5 минут). Герой сидит в тёмном зале среди картин осетинского пантеона, погружённый в медитацию. Камера входит в его зрачок — начинается путешествие по внутреннему пространству, где герой встречает небожителей осетинской мифологии. Каждый оставляет светящуюся тропу, ведущую дальше. В финале — колодец света и пробуждение.</p>
+      <p style="margin-top:10px"><strong>Ключевая метафора:</strong> Светящаяся тропа — путь предков через ДНК, ведущий героя к осознанию своей сущности.</p>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Mythology -->
+    <div class="myth-section fade-up stagger-3">
+      <h3>Пантеон &mdash; Небожители в видео</h3>
+      <div class="myth-grid">
+        <div class="myth-card">
+          <div class="myth-name">Уастырджи</div>
+          <div class="myth-desc">Покровитель воинов, путников и мужчин. Ездит на белом трёхногом коне. Аналог Святого Георгия. В видео: появляется из темноты с белым жеребцом, молча смотрит и ускакивает, оставляя светящуюся тропу.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Тутыр</div>
+          <div class="myth-desc">Покровитель волков, повелитель хищных зверей. Может обращаться в волка. В видео: фигура с волками, чьи глаза светятся в темноте. Возможно, обращается в волка и уводит стаю.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Фалвара</div>
+          <div class="myth-desc">Покровитель домашнего скота, мирных животных. Добрый и кроткий небожитель. В видео: акцент на картине, ракурс вздымания груди героя (ровное дыхание). Стада чёрных быков с золотыми колокольчиками.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Уацилла</div>
+          <div class="myth-desc">Небожитель грома и молнии, аналог Зевса/Перуна. Повелитель урожая. В видео: появляется из тьмы, закрывает глаза — в него бьёт молния, образуя новую светящуюся тропу. Вспышка озаряет море предков.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Афсати</div>
+          <div class="myth-desc">Покровитель диких животных, особенно оленей. Хозяин горных зверей. В видео: могучий олень с золотыми рогами, от которых исходит свечение. Зум в зрачок оленя — космос, Млечный Путь.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Балсаг</div>
+          <div class="myth-desc">Хранитель колеса судьбы/вселенной. Держит светящееся колесо (символ Млечного Пути и цикличности). В видео: берёт галактику как колесо и пускает по земле — оставляет светящуюся тропу.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Барастыр</div>
+          <div class="myth-desc">Властитель загробного мира, хранитель царства мёртвых. Справедливый судья. В видео: стоит у каменного колодца со светом, вокруг — море людей-предков. Указывает герою на колодец.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Key terms -->
+    <div class="myth-section fade-up stagger-4">
+      <h3>Ключевые понятия</h3>
+      <div class="myth-grid">
+        <div class="myth-card">
+          <div class="myth-name">Зилахар</div>
+          <div class="myth-desc">Священное поле, где пируют предки. «Ряды столов уходят в горизонт» — пиршественное поле загробного мира, куда приглашаются достойные потомки.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Кишен фандыр</div>
+          <div class="myth-desc">Осетинский струнный музыкальный инструмент. Упоминается как возможный элемент минимального музыкального сопровождения — низкий басовый дрон.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Светящаяся тропа</div>
+          <div class="myth-desc">Центральный визуальный мотив видео. Каждый небожитель оставляет сияющий путь, ведущий героя дальше. Символ связи поколений через ДНК.</div>
+        </div>
+        <div class="myth-card">
+          <div class="myth-name">Картины Лотиева</div>
+          <div class="myth-desc">Референс стиля. Махарбек Лотиев — осетинский художник, чьи картины осетинского пантеона упоминаются как образец ультрареалистичного стиля для видео.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Technical -->
+    <div class="concept-block fade-up stagger-4">
+      <h4>Технические особенности</h4>
+      <ul>
+        <li><strong>Формат:</strong> 16:9, ~5 минут, высокое разрешение</li>
+        <li><strong>Генерация:</strong> ИИ-генерация кадров + ИИ-оживление в видео</li>
+        <li><strong>Проблема динамики:</strong> нейронка глючит при динамичных сценах — решение: статичные кадры + минимальное движение</li>
+        <li><strong>Перегенерация:</strong> можно взять хороший исходник и прогнать через нейронку заново = новое видео без проблем с правами</li>
+        <li><strong>Pipeline:</strong> линейный, 5 сек за раз, утвердили — не возвращаемся</li>
+        <li><strong>Саунд-дизайн:</strong> добавляется в конце (дыхание, вой, эффекты)</li>
+      </ul>
+    </div>
+
+    <div class="concept-block fade-up stagger-5">
+      <h4>Референсы</h4>
+      <ul>
+        <li><strong>Фильм «Руми»</strong> — про Джалаладдина Руми. Рекомендация от Вовы. Музыкальное сопровождение как пример (басовый дрон с развитием под сюжет).</li>
+        <li><strong>Картины Лотиева</strong> — стиль изображения небожителей.</li>
+        <li><strong>Фильм «Начало»</strong> (Inception) — упоминается шутливо, но идея снов внутри снов перекликается с концепцией внутреннего путешествия.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     JAVASCRIPT
+     ═══════════════════════════════════════════ -->
+<script>
+// Tab switching
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+});
+
+// Past items toggle
+function togglePast(el) {
+  el.classList.toggle('open');
+  document.getElementById('past-items').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

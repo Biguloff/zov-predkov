@@ -791,6 +791,8 @@ body::before {
   <button class="tab-btn" data-tab="poem">Стихотворение</button>
   <button class="tab-btn" data-tab="scenario">Сценарий</button>
   <button class="tab-btn" data-tab="decisions">Правки и решения</button>
+  <button class="tab-btn" data-tab="tasks">Задачи</button>
+  <button class="tab-btn" data-tab="rules">Правила</button>
   <button class="tab-btn" data-tab="about">База знаний</button>
 </nav>
 
@@ -873,11 +875,31 @@ body::before {
     <div class="timeline">
 
       <div class="tl-item current fade-up stagger-2">
-        <div class="tl-date">3 апреля 2026 <span class="today-badge">Сегодня</span></div>
+        <div class="tl-date">18 апреля 2026 <span class="today-badge">Сегодня</span></div>
+        <div class="tl-title">Созвон — Правки первой сцены</div>
+        <div class="tl-desc">
+          <ul>
+            <li>Первые кадры утверждены концептуально — идёт итерация по темпу</li>
+            <li>Первые два катрена — осмотр сцены (больше ракурсов, размеренность)</li>
+            <li>Залёт в зрачок перенесён на третий катрен, без спешки</li>
+            <li>Четвёртый катрен — Уастырджи проявляется из темноты</li>
+            <li>Картины — единый формат, отдельно не показываем</li>
+            <li>Правило над правилами: <strong>реализм</strong> выше эффектов</li>
+          </ul>
+          <span class="assignee sergey">Сергей — правки</span>
+          <span class="assignee vova">Вова — утверждение</span>
+          <span style="margin-left:8px; font-size:0.8rem; color: var(--text-secondary);">
+            Полный разбор &rarr; вкладка <strong>Задачи</strong>
+          </span>
+        </div>
+      </div>
+
+      <div class="tl-item current fade-up stagger-2">
+        <div class="tl-date">3 апреля 2026</div>
         <div class="tl-title">Созвон — Новый пайплайн</div>
         <div class="tl-desc">
           <ul>
-            <li>Утвержден <strong>линейный подход</strong>: по сегментам, каждый утверждается</li>
+            <li>Утверждён <strong>линейный подход</strong>: по сегментам, каждый утверждается</li>
             <li>Главное требование к кадрам: <strong>ультрареализм</strong>, без мультяшности</li>
             <li>Статичные кадры с настроением, меньше динамики</li>
             <li>Картины заменить, крупные планы, сильные взгляды</li>
@@ -1113,6 +1135,10 @@ body::before {
       <p>Раскадровка: слева — строки стихотворения, справа — визуальное описание сцены</p>
     </div>
 
+    <div class="decision-card fade-up stagger-1" style="max-width:820px; margin:0 auto 32px; background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.18);">
+      <strong>Обновление 18 апреля 2026.</strong> Первые два катрена теперь — осмотр сцены (больше ракурсов, размеренный темп). Залёт в зрачок перенесён на третий катрен («Через твои глаза внимает мир...»). В четвёртом катрене — Уастырджи проявляется из темноты. Подробный шот-лист → вкладка <strong>Задачи</strong>.
+    </div>
+
     <!-- Scene 1 -->
     <div class="scene-card fade-up stagger-1">
       <div class="scene-poem">
@@ -1272,8 +1298,35 @@ body::before {
       <h2>Правки и решения</h2>
     </div>
 
-    <!-- Latest call decisions -->
+    <!-- April 18 call -->
     <div class="decision-group fade-up stagger-1">
+      <h3>Созвон 18 апреля 2026 — Правки по темпу и переходам</h3>
+
+      <div class="decision-card">
+        <strong>Замедлить начало.</strong> Слишком стремительно. Первые два катрена — осмотр сцены, больше ракурсов. Залёт в зрачок перенесён на третий катрен, размеренно. <span class="status-pending">В работе</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Картины — единый формат.</strong> Убрать разнобой по размерам. Картины одинаковые, отдельно показывать не нужно. <span class="status-pending">В работе</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Уастырджи проявляется из дали.</strong> В темноте — силуэт вдали &rarr; приближается &rarr; резкий cut на крупный план. Чередовать с кадром героя (закрытые глаза) для разграничения реального и внутреннего мира.
+      </div>
+
+      <div class="decision-card">
+        <strong>Правило над правилами:</strong> реализм важнее эффектов. Не получается реалистично — упрощай. Лучше чёрное пространство и резкий крупняк, чем мультяшный эффект. <span class="status-ok">Железное правило</span>
+      </div>
+
+      <div class="decision-card" style="background: rgba(201,168,76,0.05); border-color: rgba(201,168,76,0.18);">
+        Полный разбор по строкам стиха и конкретные ракурсы &rarr; вкладка <strong>Задачи</strong>.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- April 3 call decisions -->
+    <div class="decision-group fade-up stagger-2">
       <h3>Созвон 3 апреля 2026 — Основные правки</h3>
 
       <div class="decision-card">
@@ -1324,7 +1377,7 @@ body::before {
     <div class="section-divider"></div>
 
     <!-- Previous decisions -->
-    <div class="decision-group fade-up stagger-2">
+    <div class="decision-group fade-up stagger-3">
       <h3>Ранее утверждённые решения</h3>
 
       <div class="decision-card">
@@ -1356,7 +1409,299 @@ body::before {
 </section>
 
 <!-- ═══════════════════════════════════════════
-     TAB 5: KNOWLEDGE BASE
+     TAB 5: TASKS (current call tasks)
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="tasks">
+  <div class="container">
+
+    <div class="decisions-header fade-up">
+      <h2>Задачи по созвону</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 6px; text-align: center;">
+        Правки из созвона 18 апреля 2026 — над этим работаем сейчас
+      </p>
+    </div>
+
+    <!-- 1. Three main edits -->
+    <div class="decision-group fade-up stagger-1">
+      <h3>Три ключевые правки</h3>
+
+      <div class="decision-card">
+        <strong>1. Картины остаются картинами.</strong> Сейчас идёт разнобой по размерам — картины должны быть одинаковые, единый формат. Отдельно картины не показываем — и так понятно.
+        <span class="status-pending">В работе</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>2. Замедлить начало.</strong> Слишком стремительно всё происходит. Нужно больше времени на осмотр сцены — добавить ещё одно четверостишье на изучение обстановки.
+        <span class="status-pending">В работе</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>3. Залёт в зрачок — только на «Через твои глаза...».</strong> Раньше происходило слишком рано и быстро. Теперь весь третий катрен — размеренный пролёт в глаз.
+        <span class="status-pending">В работе</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 2. New timing structure -->
+    <div class="decision-group fade-up stagger-2">
+      <h3>Новая временная структура первой сцены</h3>
+
+      <div class="scene-card">
+        <div class="scene-poem">
+          <div class="scene-number">Катрены 1–2</div><br>
+          <em>«Потомок мой, ты плод на старом древе...»</em><br>
+          <em>«Не верь, что нет меня. Осенний лист иссохший...»</em>
+        </div>
+        <div class="scene-visual">
+          <div class="scene-number">Осмотр сцены</div><br>
+          Размеренное ознакомление зрителя с обстановкой пантеона. Несколько ракурсов:
+          <ul style="margin-top:8px; padding-left:20px;">
+            <li>камера наезжает на героя — «Потомок мой...»</li>
+            <li>наезд продолжается — «Стоящим с незапамятных времён»</li>
+            <li>смена ракурса — «Когда очиститься зерно...»</li>
+            <li>ещё ракурс — «Услышишь голос мой сквозь сон»</li>
+            <li>второй катрен — ракурс сбоку, картины с другого угла, планы рук / лица / глаз</li>
+          </ul>
+          <div class="scene-note">Цель — тишина, размеренность. Без суеты и быстроты событий.</div>
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-poem">
+          <div class="scene-number">Катрен 3</div><br>
+          <em>«Через твои глаза внимает мир всё та же<br>
+          Безмолвная, вневременная суть,<br>
+          Что наблюдала и за мной однажды,<br>
+          Что некогда мою вздымала грудь.»</em>
+        </div>
+        <div class="scene-visual">
+          <div class="scene-number">Пролёт в зрачок</div><br>
+          Камера плавно, без спешки, залетает в глаз героя. Все четыре строки — размеренный пролёт. К концу катрена камера уже внутри.
+          <div class="scene-note">Было слишком быстро — растягиваем на весь катрен.</div>
+        </div>
+      </div>
+
+      <div class="scene-card">
+        <div class="scene-poem">
+          <div class="scene-number">Катрен 4</div><br>
+          <em>«Ты был всегда, когда-то звался мною...»</em>
+        </div>
+        <div class="scene-visual">
+          <div class="scene-number">Внутренний мир — Уастырджи</div><br>
+          В темноте / чёрном пространстве. Приём Вовы: камера летит вперёд через черноту, вдали силуэт — приближаясь, становится всё чётче. В момент полной чёткости — резкий cut на крупный план.
+          <div class="scene-note">Чередовать: кадр с закрытыми глазами героя (реальный мир) ↔ чернота с силуэтом (внутренний мир). Два пространства должны явно разграничиваться.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 3. Visual principles -->
+    <div class="decision-group fade-up stagger-3">
+      <h3>Визуальные принципы погружения</h3>
+
+      <div class="decision-card">
+        <strong>Два мира чередуются.</strong> Кадры из реального мира (герой с закрытыми глазами) ↔ кадры из внутреннего мира (чернота, силуэты). Зритель должен понимать, что это два разных пространства.
+      </div>
+
+      <div class="decision-card">
+        <strong>Уастырджи — проявление из дали.</strong> Не сразу крупняк. Сначала чёрное пространство, силуэт вдалеке, приближение. В момент, когда силуэт становится полностью чётким — резкий cut на крупный план.
+      </div>
+
+      <div class="decision-card">
+        <strong>Картины не показываем отдельно.</strong> Отдельный кадр картины не нужен — и так понятно. Если нужен намёк — кадр героя с закрытыми глазами на фоне картины.
+      </div>
+
+      <div class="decision-card">
+        <strong>Размеренность, не суета.</strong> Длиннее кадры или больше ракурсов — на чутьё. Но главное — избегать быстроты событий.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 4. Supreme rule -->
+    <div class="decision-group fade-up stagger-4">
+      <h3>Правило над правилами</h3>
+
+      <div class="decision-card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05);">
+        <strong>Реализм &gt; всё остальное.</strong> Если приём не получается реалистичным — упрощай. Лучше простое чёрное пространство и резкий крупный план («бам, он»), чем мультяшные элементы. Пусть будет странновато — лишь бы реалистично.
+        <span class="status-ok">Железное правило</span>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- 5. Open questions -->
+    <div class="decision-group fade-up stagger-4">
+      <h3>Открытые вопросы</h3>
+
+      <div class="decision-card">
+        <strong>Подписи на картинах.</strong> Сергей спрашивал: оставить или убрать? Вова: отдельный кадр картины вообще не нужен — вопрос снимается.
+        <span class="status-ok">Закрыт</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Частицы в темноте.</strong> Сергей предлагал добавить частицы при пролёте через черноту — будто летим через что-то. Вова: «Может быть».
+        <span class="status-pending">Пробовать — если реалистично</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 6: RULES (generation principles)
+     ═══════════════════════════════════════════ -->
+<section class="tab-content" id="rules">
+  <div class="container">
+
+    <div class="decisions-header fade-up">
+      <h2>Правила генерации</h2>
+      <p style="color: var(--text-secondary); font-size: 0.9rem; margin-top: 6px; text-align: center;">
+        Технические принципы проекта — применяем на каждом шаге
+      </p>
+    </div>
+
+    <!-- Main principle -->
+    <div class="decision-group fade-up stagger-1">
+      <h3>Главный принцип — ультрареализм</h3>
+
+      <div class="decision-card" style="border-color: rgba(201,168,76,0.3); background: rgba(201,168,76,0.05);">
+        <strong>Каждый кадр — как сильная фотография.</strong> Живой взгляд, атмосфера, вес. Персонажи НЕ мультяшные. Референс стиля — картины Махарбека Лотиева.
+        <span class="status-ok">Приоритет #1</span>
+      </div>
+
+      <div class="decision-card">
+        <strong>Если не получается реалистично — упрощай.</strong> Лучше простой кадр (чёрное пространство + резкий крупный план), чем сложный эффект с мультяшностью.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Models -->
+    <div class="decision-group fade-up stagger-2">
+      <h3>Видео-модели</h3>
+
+      <div class="decision-card">
+        <strong>По дефолту — Seedance 2.0.</strong> Варианты: Pro / Fast / T2V / I2V / R2V — выбираем под задачу кадра.
+      </div>
+
+      <div class="decision-card">
+        <strong>Альтернативы только по явному запросу:</strong> Kling 2.6 или Kling 3. Никогда не откатываемся молча на Seedance 1.x.
+      </div>
+
+      <div class="decision-card">
+        <strong>При блокировке модерации:</strong> сначала softer prompt (убрать агрессивные слова — «punch», «smash»), 1–2 попытки. Дальше — спрашиваем, не решаем сами.
+      </div>
+
+      <div class="decision-card">
+        <strong>Поставщик:</strong> Fal.ai — Queue API для видео, sync API для изображений.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Identity -->
+    <div class="decision-group fade-up stagger-3">
+      <h3>Идентичность персонажа</h3>
+
+      <div class="decision-card">
+        <strong>Multi-reference.</strong> На R2V — 3–5 портретов в image_urls, не один. Один портрет не удерживает лицо после ~1 секунды — identity drift.
+      </div>
+
+      <div class="decision-card">
+        <strong>Явные anchors в промпте.</strong> Физические якоря (olive-tan skin, high cheekbones, almond eyes). Этнические негативы (NOT European, NOT Slavic) работают сильнее позитивов.
+      </div>
+
+      <div class="decision-card">
+        <strong>Video-level bypass для video_urls.</strong> Image-level bypass — недостаточно: фильтр Seedance читает содержимое видео. Применяем blur + grain + grid поверх всего видео.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Bypass -->
+    <div class="decision-group fade-up stagger-3">
+      <h3>Обход фильтра Seedance</h3>
+
+      <div class="decision-card">
+        <strong>Проблема.</strong> Seedance 2.0 блокирует реальные лица — даже полностью AI-photoreal. Нужен bypass перед загрузкой.
+      </div>
+
+      <div class="decision-card">
+        <strong>PIL pipeline (двухступенчатый):</strong>
+        <ul style="margin-top:8px; padding-left:20px;">
+          <li><em>Soft:</em> blur + grain + 6×6 grid</li>
+          <li><em>Hard:</em> pixelate + blur + grain + 8×8 grid</li>
+        </ul>
+        Не использовать frontal close-up в коллаже — фильтр вернёт блок.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- NBP prompting -->
+    <div class="decision-group fade-up stagger-4">
+      <h3>Промптинг Nano Banana Pro</h3>
+
+      <div class="decision-card">
+        <strong>Три типичных провала identity-preservation:</strong>
+        <ol style="margin-top:10px; padding-left:22px;">
+          <li><strong>Pose flattening</strong> — 3/4 ракурс сплющивается во фронтальный. Фикс: блок «reproduce EXACTLY» — описывай позу как alt-text для слепого.</li>
+          <li style="margin-top:8px;"><strong>Material substitution</strong> — ткань становится кольчугой, папаха шлемом. Фикс: блок «ABSOLUTE RULE: MATERIAL FIDELITY» — cloth=cloth, felt=felt, NEVER chainmail.</li>
+          <li style="margin-top:8px;"><strong>Ethnicity drift</strong> — уходит в generic European. Фикс: explicit anchors + негативы (NOT European, NOT Slavic).</li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Audio -->
+    <div class="decision-group fade-up stagger-4">
+      <h3>Аудио</h3>
+
+      <div class="decision-card">
+        <strong>Всегда спрашиваем про звук.</strong> Перед каждой Seedance-генерацией — нужен ли audio, какой подход (V2A, embedded, озвучка).
+      </div>
+
+      <div class="decision-card">
+        <strong>V2A (video → audio):</strong>
+        <ul style="margin-top:8px; padding-left:20px;">
+          <li><em>Mirelo SFX v1.5</em> — дефолт, лучше MMAudio на 70–80%</li>
+          <li><em>MMAudio V2</em> — бюджетный вариант</li>
+        </ul>
+      </div>
+
+      <div class="decision-card">
+        <strong>Seedance R2V audio:</strong> только MP3. WAV молча глохнет без ошибки.
+      </div>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- QA & pipeline -->
+    <div class="decision-group fade-up stagger-5">
+      <h3>Контроль качества и pipeline</h3>
+
+      <div class="decision-card">
+        <strong>20-точечная QA-рубрика.</strong> Для каждого видео: физика (движение, свет, вес), кинематография (композиция, ракурс, фокус), look (стиль, цвет, текстура), identity (сохранена ли внешность героя), соответствие брифу.
+      </div>
+
+      <div class="decision-card">
+        <strong>Линейный pipeline (решение 3 апреля).</strong> Сегмент ~5 секунд &rarr; утверждение &rarr; не возвращаемся. От начала к концу, без перескоков.
+      </div>
+
+      <div class="decision-card">
+        <strong>Перегенерация исходника.</strong> Если композиция чужого видео подходит — прогоняем через нейронку и получаем новое видео с чистыми правами.
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     TAB 7: KNOWLEDGE BASE
      ═══════════════════════════════════════════ -->
 <section class="tab-content" id="about">
   <div class="container">
